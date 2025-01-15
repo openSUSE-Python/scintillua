@@ -60,6 +60,27 @@ local function h(n)
 end
 lex:add_rule('header', h(6) + h(5) + h(4) + h(3) + h(2) + h(1))
 
+-- * local pattern_priority = '[#' * S('ABC') * ']'
+-- * local pattern_tags = ':' * (lexer.word + lexer.punct)^1 * lexer.newline
+-- * local pattern_h1 = lexer.starts_line('* ')        -- Heading1.
+-- * local pattern_h2 = lexer.starts_line('** ')       -- Heading2.
+-- * local pattern_h3 = lexer.starts_line('*** ')      -- Heading3.
+-- * local pattern_h4 = lexer.starts_line('**** ')     -- Heading4.
+-- * local pattern_h5 = lexer.starts_line('***** ')    -- Heading5.
+-- *
+-- * -- Heading lex:tag parts.
+-- * local part_h1 = lex:tag(lexer.CLASS,        (lexer.nonnewline - S('<[') - (':' * lexer.word))^0) * datetime^0 * lex:tag(lexer.CLASS,        (lexer.nonnewline - (':' * lexer.word))^0)
+-- * local part_h2 = lex:tag(lexer.STRING,       (lexer.nonnewline - S('<[') - (':' * lexer.word))^0) * datetime^0 * lex:tag(lexer.STRING,       (lexer.nonnewline - (':' * lexer.word))^0)
+-- * local part_h3 = lex:tag(lexer.FUNCTION,     (lexer.nonnewline - S('<[') - (':' * lexer.word))^0) * datetime^0 * lex:tag(lexer.FUNCTION,     (lexer.nonnewline - (':' * lexer.word))^0)
+-- * local part_h4 = lex:tag(lexer.PREPROCESSOR, (lexer.nonnewline - S('<[') - (':' * lexer.word))^0) * datetime^0 * lex:tag(lexer.PREPROCESSOR, (lexer.nonnewline - (':' * lexer.word))^0)
+-- * local part_h5 = lex:tag(lexer.CONSTANT,     (lexer.nonnewline - S('<[') - (':' * lexer.word))^0) * datetime^0 * lex:tag(lexer.CONSTANT,     (lexer.nonnewline - (':' * lexer.word))^0)
+-- * -- Headings.
+-- * local h1 = lex:tag(lexer.CLASS, pattern_h1) *        (agenda_tags * lpeg.space)^0 * (lex:tag('PRIORITY1', pattern_priority) * lpeg.space)^0 * part_h1 * (lex:tag('TAG1', pattern_tags))^0
+-- * local h2 = lex:tag(lexer.STRING, pattern_h2) *       (agenda_tags * lpeg.space)^0 * (lex:tag('PRIORITY2', pattern_priority) * lpeg.space)^0 * part_h2 * (lex:tag('TAG2', pattern_tags))^0
+-- * local h3 = lex:tag(lexer.FUNCTION, pattern_h3) *     (agenda_tags * lpeg.space)^0 * (lex:tag('PRIORITY3', pattern_priority) * lpeg.space)^0 * part_h3 * (lex:tag('TAG3', pattern_tags))^0
+-- * local h4 = lex:tag(lexer.PREPROCESSOR, pattern_h4) * (agenda_tags * lpeg.space)^0 * (lex:tag('PRIORITY4', pattern_priority) * lpeg.space)^0 * part_h4 * (lex:tag('TAG4', pattern_tags))^0
+-- * local h5 = lex:tag(lexer.CONSTANT, pattern_h5) *     (agenda_tags * lpeg.space)^0 * (lex:tag('PRIORITY5', pattern_priority) * lpeg.space)^0 * part_h5 * (lex:tag('TAG5', pattern_tags))^0
+
 -- Links.
 local orgmode_link = '[[' * (lexer.nonnewline - ' ' - ']')^1 * ']' *
 	('[' * (lexer.nonnewline - ']')^1 * ']')^0 * ']'
