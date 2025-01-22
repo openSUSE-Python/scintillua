@@ -117,10 +117,8 @@ local h4 = lex:tag(lexer.PREPROCESSOR, pattern_h4) * (agenda_tags * lpeg.space)^
 local h5 = lex:tag(lexer.CONSTANT, pattern_h5) *     (agenda_tags * lpeg.space)^0 * (lex:tag('PRIORITY5', pattern_priority) * lpeg.space)^0 * part_h5 * (lex:tag('TAG5', pattern_tags))^0
 
 -- Links.
--- For SUSE abbreviations see https://en.opensuse.org/openSUSE:Packaging_Patches_guidelines#Current_set_of_abbreviations
-local suse_abbrev = lpeg.B(lpeg.space) * ( lpeg.lower^-4 * S("#-") )^1 * lpeg.digit^1 * #lpeg.space
 local orgmode_link = '[[' * (lexer.nonnewline - ' ' - ']')^1 * ']' * ('[' * (lexer.nonnewline - ']')^1 * ']')^0 * ']'
-lex:add_rule('link', lex:tag(lexer.FUNCTION, orgmode_link + suse_abbrev))
+lex:add_rule('link', lex:tag(lexer.FUNCTION, orgmode_link))
 
 -- Strings.
 -- local sq_str = P('L')^-1 * lexer.range("'")
