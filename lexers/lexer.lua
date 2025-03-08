@@ -1701,6 +1701,7 @@ function M.detect(filename, line)
 		clj = 'clojure', cljs = 'clojure', cljc = 'clojure', edn = 'clojure', --
 		['CMakeLists.txt'] = 'cmake', cmake = 'cmake', ['cmake.in'] = 'cmake', ctest = 'cmake',
 		['ctest.in'] = 'cmake', --
+		cbl = 'cobol', cob = 'cobol', cpy = 'cobol', --
 		coffee = 'coffeescript', --
 		cr = 'crystal', --
 		css = 'css', --
