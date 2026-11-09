@@ -534,6 +534,51 @@ function test_loads()
 	end
 end
 
+function test_typst()
+	local typst = lexer.load('typst')
+
+	assert_lex(typst, '// comment\n/* block */', {
+		COMMENT, '// comment', COMMENT, '/* block */'
+	})
+	assert_lex(typst, '== Heading', {HEADING, '== Heading'})
+	assert_lex(typst, '*bold*', {BOLD, '*bold*'})
+	assert_lex(typst, '_italic_', {ITALIC, '_italic_'})
+	assert_lex(typst, '*_both_*', {BOLD, '*_both_*'})
+	assert_lex(typst, '*_bold_with_underscores_*', {BOLD, '*_bold_with_underscores_*'})
+	assert_lex(typst, '- bullet', {LIST, '- ', DEFAULT, 'bullet'})
+	assert_lex(typst, '+ ordered', {LIST, '+ ', DEFAULT, 'ordered'})
+	assert_lex(typst, '1. enumerated', {LIST, '1. ', DEFAULT, 'enumerated'})
+	assert_lex(typst, '/ term: definition', {LIST, '/ term:', DEFAULT, 'definition'})
+	assert_lex(typst, '@reference <label> https://example.com', {
+		REFERENCE, '@reference', LABEL, '<label>', LINK, 'https://example.com'
+	})
+	assert_lex(typst, '#let value = 12pt', {
+		PREPROCESSOR, '#', KEYWORD, 'let', IDENTIFIER, 'value', OPERATOR, '=', NUMBER, '12',
+		lexer.CONSTANT, 'pt'
+	})
+	assert_lex(typst, '#let mut value', {
+		PREPROCESSOR, '#', KEYWORD, 'let', DEFAULT, 'mut', IDENTIFIER, 'value'
+	})
+	assert_lex(typst, '#for item', {
+		PREPROCESSOR, '#', KEYWORD, 'for', IDENTIFIER, 'item'
+	})
+	assert_lex(typst, '#foo(1)', {
+		PREPROCESSOR, '#', FUNCTION, 'foo', OPERATOR, '(', NUMBER, '1', OPERATOR, ')'
+	})
+	assert_lex(typst, '#LET', {PREPROCESSOR, '#', IDENTIFIER, 'LET'})
+	assert_lex(typst, '$alpha + beta(2) + 3pt$', {
+		OPERATOR, '$', IDENTIFIER, 'alpha', OPERATOR, '+', FUNCTION, 'beta', OPERATOR, '(',
+		NUMBER, '2', OPERATOR, ')', OPERATOR, '+', NUMBER, '3', lexer.CONSTANT, 'pt', OPERATOR, '$'
+	})
+	assert_lex(typst, '$#let$', {
+		OPERATOR, '$', PREPROCESSOR, '#', KEYWORD, 'let', OPERATOR, '$'
+	})
+	assert_lex(typst, '`raw` ```code```', {
+		CODE, '`raw`', CODE, '```code```'
+	})
+	assert_fold_points(typst, '== Parent\ntext\n=== Child\ntext\n== Sibling\ntext', {1, 3, 5})
+end
+
 function test_names()
 	lexer.property['scintillua.lexers'] = ''
 	local names = lexer.names()
@@ -1739,6 +1784,7 @@ end
 function test_detect()
 	assert(lexer.detect('foo.lua') == 'lua')
 	assert(lexer.detect('foo.c') == 'c')
+	assert(lexer.detect('foo.typ') == 'typst')
 	assert(not lexer.detect('foo.txt'))
 	assert(lexer.detect('foo', '#!/bin/sh') == 'bash')
 	assert(not lexer.detect('foo', '/bin/sh'))

@@ -1837,6 +1837,7 @@ function M.detect(filename, line)
 		['7x'] = 'troff', ['8x'] = 'troff', ['9x'] = 'troff', --
 		t2t = 'txt2tags', --
 		ts = 'typescript', --
+		typ = 'typst', --
 		vala = 'vala', --
 		vcf = 'vcard', vcard = 'vcard', --
 		v = 'verilog', ver = 'verilog', --

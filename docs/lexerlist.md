@@ -148,6 +148,7 @@ used if [`fold.scintillua.by.indentation`][] is enabled. For SciTE, see *lexers/
 1. Troff
 1. txt2tags
 1. TypeScript`*`
+1. Typst`*`
 1. Vala`*`
 1. vCard`*`
 1. Verilog`*`
